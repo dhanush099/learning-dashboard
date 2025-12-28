@@ -203,7 +203,7 @@ const ProfilePage = () => {
                       />
                     ) : user?.profileImage ? (
                       <img
-                        src={`http://localhost:5000/uploads/${user.profileImage}`}
+                        src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${user.profileImage}`}
                         alt="Profile"
                         className="h-full w-full object-cover"
                       />

@@ -149,7 +149,9 @@ const DashboardLayout = ({ children }) => {
               <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold overflow-hidden">
                 {user?.profileImage ? (
                   <img
-                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${user.profileImage}`}
+                    src={`${
+                      import.meta.env.VITE_API_URL || "http://localhost:5000"
+                    }/uploads/${user.profileImage}`}
                     alt="Profile"
                     className="h-full w-full object-cover"
                   />
