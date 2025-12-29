@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourseWare</title>
+  <script type="text/javascript">
+    // SPA redirect for Render static sites
+    var l = window.location;
+    var path = l.pathname;
+    var search = l.search;
+    var hash = l.hash;
+
+    // If the path is not just "/" and doesn't start with /assets or /vite.svg (static files)
+    if (path !== '/' && !path.startsWith('/assets') && !path.startsWith('/vite.svg')) {
+      // Redirect to root with the path as a query parameter
+      l.replace('/?' + path.slice(1) + (search ? '&' + search.slice(1) : '') + hash);
+    }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

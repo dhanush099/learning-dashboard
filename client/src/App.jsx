@@ -4,8 +4,10 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
+  useLocation,
 } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./context/AuthContext";
 
 // Pages
@@ -41,8 +43,33 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-        <Routes>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Handle SPA routing for static site deployment
+  useEffect(() => {
+    // If we're at root with query params, it means we came from 404.html redirect
+    if (location.pathname === '/' && location.search) {
+      const searchParams = new URLSearchParams(location.search);
+      // Get the first query parameter name (e.g., 'login' from ?login)
+      const entries = Array.from(searchParams.entries());
+      if (entries.length > 0) {
+        const [route] = entries[0];
+        // Navigate to the actual route
+        navigate('/' + route, { replace: true });
+      }
+    }
+  }, [location, navigate]);
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
