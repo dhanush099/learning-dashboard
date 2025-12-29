@@ -184,8 +184,7 @@ function AppContent() {
           />
         </Routes>
       </div>
-    </Router>
-  );
+    );
 }
 
 export default App;
