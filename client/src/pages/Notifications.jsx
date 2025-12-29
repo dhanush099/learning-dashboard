@@ -9,7 +9,7 @@ const Notifications = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const { data } = await api.get("/notifications");
+        const { data } = await api.get("/api/notifications");
         setNotifications(data);
       } catch (error) {
         console.error("Error fetching notifications");

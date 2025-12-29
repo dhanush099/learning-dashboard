@@ -10,14 +10,24 @@ const api = axios.create({
   timeout: 10000, // 10 second timeout
 });
 
-// Add request interceptor for debugging
+// Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    console.log('📤 API Request:', config.method?.toUpperCase(), config.url);
+    console.log('API Request:', config.method?.toUpperCase(), config.url);
+
+    // Get token from localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+      console.log(' Token attached to request');
+    } else {
+      console.log('No token found in localStorage');
+    }
+
     return config;
   },
   (error) => {
-    console.error('❌ Request Error:', error);
+    console.error(' Request Error:', error);
     return Promise.reject(error);
   }
 );
@@ -25,11 +35,11 @@ api.interceptors.request.use(
 // Add response interceptor for debugging
 api.interceptors.response.use(
   (response) => {
-    console.log('📥 API Response:', response.status, response.config.url);
+    console.log('API Response:', response.status, response.config.url);
     return response;
   },
   (error) => {
-    console.error('❌ API Error:', error.response?.status, error.response?.data || error.message);
+    console.error('API Error:', error.response?.status, error.response?.data || error.message);
     return Promise.reject(error);
   }
 );

@@ -22,13 +22,15 @@ const AssignmentEvaluation = () => {
     const fetchData = async () => {
       try {
         // Fetch assignment
-        const { data: assignments } = await api.get(`/assignments/${courseId}`);
+        const { data: assignments } = await api.get(
+          `/api/assignments/${courseId}`
+        );
         const foundAssignment = assignments.find((a) => a._id === assignmentId);
         setAssignment(foundAssignment);
 
         // Fetch submissions
         const { data: subs } = await api.get(
-          `/submissions/assignment/${assignmentId}`
+          `/api/submissions/assignment/${assignmentId}`
         );
         setSubmissions(subs);
         setLoading(false);
@@ -49,14 +51,14 @@ const AssignmentEvaluation = () => {
     }
 
     try {
-      await api.put(`/submissions/${selectedSubmission._id}/grade`, {
+      await api.put(`/api/submissions/${selectedSubmission._id}/grade`, {
         grade: Number(grade),
         feedback,
       });
 
       // Refresh submissions
       const { data: subs } = await api.get(
-        `/submissions/assignment/${assignmentId}`
+        `/api/submissions/assignment/${assignmentId}`
       );
       setSubmissions(subs);
 
@@ -88,17 +90,16 @@ const AssignmentEvaluation = () => {
   if (!assignment) {
     return (
       <DashboardLayout>
-        <div className="p-8 text-center text-red-500">
-          Assignment not found
-        </div>
+        <div className="p-8 text-center text-red-500">Assignment not found</div>
       </DashboardLayout>
     );
   }
 
   const isQuiz = assignment.type === "quiz";
   const gradedCount = submissions.filter((s) => s.status === "graded").length;
-  const pendingCount = submissions.filter((s) => s.status === "submitted")
-    .length;
+  const pendingCount = submissions.filter(
+    (s) => s.status === "submitted"
+  ).length;
 
   return (
     <DashboardLayout>
@@ -138,9 +139,7 @@ const AssignmentEvaluation = () => {
               </span>
             </div>
             <div>
-              <span className="text-gray-500 dark:text-gray-400">
-                Pending:
-              </span>{" "}
+              <span className="text-gray-500 dark:text-gray-400">Pending:</span>{" "}
               <span className="font-bold text-orange-600 dark:text-orange-400">
                 {pendingCount}
               </span>
@@ -250,7 +249,8 @@ const AssignmentEvaluation = () => {
                     )}
 
                     <div className="ml-14 mt-3 text-xs text-gray-500 dark:text-gray-400">
-                      Submitted: {new Date(submission.createdAt).toLocaleString()}
+                      Submitted:{" "}
+                      {new Date(submission.createdAt).toLocaleString()}
                     </div>
                   </div>
 
@@ -349,4 +349,3 @@ const AssignmentEvaluation = () => {
 };
 
 export default AssignmentEvaluation;
-

@@ -53,11 +53,15 @@ const ProfilePage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await api.put("/users/profile/image", imageFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data } = await api.put(
+        "/api/users/profile/image",
+        imageFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       // Update user context with new image
       const updatedUser = { ...user, profileImage: data.profileImage };
@@ -84,7 +88,7 @@ const ProfilePage = () => {
 
     try {
       setIsLoading(true);
-      const { data } = await api.put("/users/profile", {
+      const { data } = await api.put("/api/users/profile", {
         name: formData.name,
         phone: formData.phone,
         education: formData.education,
@@ -132,7 +136,7 @@ const ProfilePage = () => {
 
     try {
       setIsLoading(true);
-      await api.put("/users/profile/password", {
+      await api.put("/api/users/profile/password", {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
       });

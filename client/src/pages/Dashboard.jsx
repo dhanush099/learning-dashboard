@@ -14,7 +14,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const { data } = await api.get("/courses");
+        const { data } = await api.get("/api/courses");
         // If learner, only show enrolled. If educator, show assigned. If coordinator, show all.
         const myCourses =
           user.role === "learner"

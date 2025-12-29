@@ -24,7 +24,9 @@ const QuizTaking = () => {
     const fetchData = async () => {
       try {
         // Fetch assignment details
-        const { data: assignments } = await api.get(`/assignments/${courseId}`);
+        const { data: assignments } = await api.get(
+          `/api/assignments/${courseId}`
+        );
         const foundAssignment = assignments.find((a) => a._id === assignmentId);
 
         if (!foundAssignment) {
@@ -58,7 +60,7 @@ const QuizTaking = () => {
         // Check if already submitted
         try {
           const { data: existingSubmission } = await api.get(
-            `/submissions/assignment/${assignmentId}/my-submission`
+            `/api/submissions/assignment/${assignmentId}/my-submission`
           );
           if (existingSubmission) {
             setSubmission(existingSubmission);
@@ -118,7 +120,7 @@ const QuizTaking = () => {
     setError("");
 
     try {
-      const { data } = await api.post("/submissions", {
+      const { data } = await api.post("/api/submissions", {
         assignmentId,
         quizAnswers: answers,
       });

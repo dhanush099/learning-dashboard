@@ -65,7 +65,7 @@ const CourseDetail = () => {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const { data } = await api.get(`/courses`);
+        const { data } = await api.get(`/api/courses`);
         setCourse(data.find((c) => c._id === id));
         setLoading(false);
       } catch (error) {
@@ -81,14 +81,14 @@ const CourseDetail = () => {
     const fetchData = async () => {
       try {
         if (activeTab === "plan") {
-          const { data } = await api.get(`/studyplans/${id}`);
+          const { data } = await api.get(`/api/studyplans/${id}`);
           setPlans(data.sort((a, b) => a.week - b.week));
         } else if (activeTab === "assignments") {
-          const { data } = await api.get(`/assignments/${id}`);
+          const { data } = await api.get(`/api/assignments/${id}`);
           setAssignments(data);
         } else if (activeTab === "overview" && user.role === "coordinator") {
           // Fetch educators list for assignment (only for coordinators)
-          const { data: users } = await api.get("/users");
+          const { data: users } = await api.get("/api/users");
           setEducators(users.filter((u) => u.role === "educator"));
         }
       } catch (error) {
@@ -104,10 +104,10 @@ const CourseDetail = () => {
     try {
       if (isEditing) {
         // UPDATE LOGIC
-        await api.put(`/studyplans/${currentPlanId}`, newPlan);
+        await api.put(`/api/studyplans/${currentPlanId}`, newPlan);
       } else {
         // CREATE LOGIC
-        await api.post("/studyplans", { ...newPlan, courseId: id });
+        await api.post("/api/studyplans", { ...newPlan, courseId: id });
       }
 
       // Reset and Close
@@ -117,7 +117,7 @@ const CourseDetail = () => {
       setCurrentPlanId(null);
 
       // Refresh Data
-      const { data } = await api.get(`/studyplans/${id}`);
+      const { data } = await api.get(`/api/studyplans/${id}`);
       setPlans(data.sort((a, b) => a.week - b.week));
       success(
         isEditing
@@ -162,7 +162,7 @@ const CourseDetail = () => {
     }
 
     try {
-      await api.post("/assignments", { ...newAssign, courseId: id });
+      await api.post("/api/assignments", { ...newAssign, courseId: id });
       setIsAssignModalOpen(false);
       setNewAssign({
         title: "",
@@ -171,7 +171,7 @@ const CourseDetail = () => {
         type: "task",
         questions: [],
       });
-      const { data } = await api.get(`/assignments/${id}`);
+      const { data } = await api.get(`/api/assignments/${id}`);
       setAssignments(data);
       success("Assignment created successfully!");
     } catch (error) {
@@ -194,7 +194,7 @@ const CourseDetail = () => {
   // --- HANDLERS (DELETE) ---
   const handleDeletePlan = async () => {
     try {
-      await api.delete(`/studyplans/${deletePlanId}`);
+      await api.delete(`/api/studyplans/${deletePlanId}`);
       setPlans(plans.filter((p) => p._id !== deletePlanId));
       success("Study plan deleted successfully");
       setDeletePlanId(null);
@@ -205,7 +205,7 @@ const CourseDetail = () => {
 
   const handleDeleteAssignment = async () => {
     try {
-      await api.delete(`/assignments/${deleteAssignId}`);
+      await api.delete(`/api/assignments/${deleteAssignId}`);
       setAssignments(assignments.filter((a) => a._id !== deleteAssignId));
       success("Assignment deleted successfully");
       setDeleteAssignId(null);
@@ -217,9 +217,9 @@ const CourseDetail = () => {
   const handleUnassignEducator = async (educatorId) => {
     if (!window.confirm("Remove this educator from the course?")) return;
     try {
-      await api.post(`/courses/${id}/unassign-educator`, { educatorId });
+      await api.post(`/api/courses/${id}/unassign-educator`, { educatorId });
       // Refresh course data
-      const { data } = await api.get(`/courses`);
+      const { data } = await api.get(`/api/courses`);
       setCourse(data.find((c) => c._id === id));
       success("Educator removed successfully");
     } catch (error) {
@@ -234,13 +234,13 @@ const CourseDetail = () => {
       return;
     }
     try {
-      await api.post(`/courses/${id}/assign-educator`, {
+      await api.post(`/api/courses/${id}/assign-educator`, {
         educatorId: selectedEducator,
       });
       setIsEducatorModalOpen(false);
       setSelectedEducator("");
       // Refresh course data
-      const { data } = await api.get(`/courses`);
+      const { data } = await api.get(`/api/courses`);
       setCourse(data.find((c) => c._id === id));
       success("Educator assigned successfully");
     } catch (error) {

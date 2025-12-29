@@ -20,9 +20,11 @@ const TaskSubmission = () => {
     const fetchData = async () => {
       try {
         // Fetch assignment details
-        const { data: assignments } = await api.get(`/assignments/${courseId}`);
+        const { data: assignments } = await api.get(
+          `/api/assignments/${courseId}`
+        );
         const foundAssignment = assignments.find((a) => a._id === assignmentId);
-        
+
         if (!foundAssignment) {
           setError("Assignment not found");
           setLoading(false);
@@ -39,7 +41,7 @@ const TaskSubmission = () => {
         // Check if already submitted
         try {
           const { data: existingSubmission } = await api.get(
-            `/submissions/assignment/${assignmentId}/my-submission`
+            `/api/submissions/assignment/${assignmentId}/my-submission`
           );
           if (existingSubmission) {
             setSubmission(existingSubmission);
@@ -72,12 +74,14 @@ const TaskSubmission = () => {
     try {
       if (submission) {
         // Update existing submission (if allowed)
-        setError("You have already submitted this assignment. Contact your educator for updates.");
+        setError(
+          "You have already submitted this assignment. Contact your educator for updates."
+        );
         setSubmitting(false);
         return;
       }
 
-      await api.post("/submissions", {
+      await api.post("/api/submissions", {
         assignmentId,
         content,
       });
@@ -165,8 +169,7 @@ const TaskSubmission = () => {
             </div>
             <div className="space-y-2">
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Submitted on:{" "}
-                {new Date(submission.createdAt).toLocaleString()}
+                Submitted on: {new Date(submission.createdAt).toLocaleString()}
               </p>
               {submission.status === "graded" && (
                 <div className="mt-4 p-4 bg-indigo-50 dark:bg-indigo-900 rounded-lg">
@@ -250,4 +253,3 @@ const TaskSubmission = () => {
 };
 
 export default TaskSubmission;
-

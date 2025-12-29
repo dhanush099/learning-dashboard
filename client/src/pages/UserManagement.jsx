@@ -42,7 +42,7 @@ const UserManagement = ({ filterRole: initialFilterRole }) => {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await api.get("/users");
+      const { data } = await api.get("/api/users");
       setUsers(data);
       setLoading(false);
     } catch (error) {
@@ -55,7 +55,7 @@ const UserManagement = ({ filterRole: initialFilterRole }) => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await api.put(`/users/${currentUserId}`, formData);
+        await api.put(`/api/users/${currentUserId}`, formData);
       } else {
         // For new users, registration should be used, but we can allow coordinators to create users
         alert(
@@ -76,7 +76,7 @@ const UserManagement = ({ filterRole: initialFilterRole }) => {
   const handleDelete = async (userId) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await api.delete(`/users/${userId}`);
+      await api.delete(`/api/users/${userId}`);
       fetchUsers();
     } catch (error) {
       alert("Delete failed");

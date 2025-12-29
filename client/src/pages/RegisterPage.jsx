@@ -39,7 +39,7 @@ const RegisterPage = () => {
     setIsLoading(true);
     try {
       await register(name, email, password, role);
-      success("Account created successfully! Welcome to LMS Pro!");
+      success("Account created successfully! Welcome to CourseWare!");
       navigate("/");
     } catch (err) {
       setError(

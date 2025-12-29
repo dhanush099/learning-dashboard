@@ -34,7 +34,7 @@ const Courses = () => {
   // Fetch Courses
   const fetchCourses = async () => {
     try {
-      const { data } = await api.get("/courses");
+      const { data } = await api.get("/api/courses");
       setCourses(data);
       setFilteredCourses(data);
     } catch (error) {
@@ -65,9 +65,9 @@ const Courses = () => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await api.put(`/courses/${currentCourseId}`, formData);
+        await api.put(`/api/courses/${currentCourseId}`, formData);
       } else {
-        await api.post("/courses", formData);
+        await api.post("/api/courses", formData);
       }
       setIsModalOpen(false);
       setFormData({
@@ -86,7 +86,7 @@ const Courses = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this course?")) return;
     try {
-      await api.delete(`/courses/${id}`);
+      await api.delete(`/api/courses/${id}`);
       fetchCourses();
     } catch (error) {
       alert("Delete failed");
@@ -117,7 +117,7 @@ const Courses = () => {
     // Simulate network delay
     setTimeout(async () => {
       try {
-        await api.post(`/courses/${selectedCourse._id}/enroll`);
+        await api.post(`/api/courses/${selectedCourse._id}/enroll`);
         setPaymentProcessing(false);
         setIsPaymentModalOpen(false);
         alert(`Successfully enrolled in ${selectedCourse.title}!`);
